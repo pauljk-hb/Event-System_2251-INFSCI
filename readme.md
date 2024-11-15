@@ -8,6 +8,98 @@ EventManager is a Django-based application for managing events and event signups
 - pip (Python package installer)
 - Virtual environment (optional but recommended)
 
+## Project Management
+
+- Anu -> Filter Functions, Filter Site
+- Jacob -> Auth Function, nessesary Sites
+- Paul -> Event CRUD Functions, Sites
+
+For every functions you should create an seperate App (for example for the Auth an Auth App or the Filter an FilterApp)
+
+#### Create an App
+
+To create a new app in Django, follow these steps:
+
+1. **Create the app:**
+
+   Navigate to your project directory and run the following command:
+
+   ```sh
+   python manage.py startapp <app_name>
+   ```
+
+   Replace `<app_name>` with the name of your app.
+
+2. **Add the app to your project:**
+
+   Open the `settings.py` file in your project directory and add your new app to the `INSTALLED_APPS` list:
+
+   ```python
+   INSTALLED_APPS = [
+       ...
+       '<app_name>',
+   ]
+   ```
+
+3. **Create views and templates:**
+
+   Define your views in the `views.py` file and create corresponding templates in the `templates` directory of your app. For example:
+
+   ```python
+   from django.shortcuts import render
+   from .models import Event
+
+   def event_list(request):
+       events = Event.objects.all()
+       return render(request, 'event_list.html', {'events': events})
+   ```
+
+   Create a template file `event_list.html` in the `templates` directory:
+
+   ```html
+   <!DOCTYPE html>
+   <html>
+     <head>
+       <title>Event List</title>
+     </head>
+     <body>
+       <h1>Events</h1>
+       <ul>
+         {% for event in events %}
+         <li>{{ event.name }} - {{ event.date }} - {{ event.location }}</li>
+         {% endfor %}
+       </ul>
+     </body>
+   </html>
+   ```
+
+4. **Configure URLs:**
+
+   Create a `urls.py` file in your app directory and define the URL patterns for your views:
+
+   ```python
+   from django.urls import path
+   from . import views
+
+   urlpatterns = [
+       path('events/', views.event_list, name='event_list'),
+   ]
+   ```
+
+   Include your app's URLs in the project's `urls.py` file:
+
+   ```python
+   from django.contrib import admin
+   from django.urls import include, path
+
+   urlpatterns = [
+       path('admin/', admin.site.urls),
+       path('', include('<app_name>.urls')),
+   ]
+   ```
+
+By following these steps, you can create and configure a new app in your Django project.
+
 ## Installation
 
 1. **Clone the repository:**
@@ -42,8 +134,6 @@ EventManager is a Django-based application for managing events and event signups
    ```sh
    pip install -r requirements.txt
    ```
-
----------In the moment we are just here!!!!!!!---------
 
 5. **Apply database migrations:**
 
