@@ -5,7 +5,7 @@ class Event(models.Model):
     event_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=255)
     description = models.TextField()
-    organizer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='events')
+    #organizer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='events')
     time = models.DateTimeField()
     location = models.CharField(max_length=255)
     type = models.CharField(max_length=50)
