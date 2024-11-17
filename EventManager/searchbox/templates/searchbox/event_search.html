@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Search</title>
+</head>
+<body>
+    <h1>Event Search Page</h1>
+    <form method="get" action="">
+        <label for="search">Search for events:</label>
+        <input type="text" id="search" name="search" placeholder="Type event name or location">
+        <button type="submit">Search</button>
+    </form>
+    {% if events %}
+        <ul>
+            {% for event in events %}
+                <li>{{ event.name }} - {{ event.location }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No events found. Try another search!</p>
+    {% endif %}
+</body>
+</html>

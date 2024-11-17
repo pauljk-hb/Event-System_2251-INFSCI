@@ -21,4 +21,5 @@ from django.urls import include, path
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("events.urls")),
+    path('search/', include('searchbox.urls')), #added searchbox url
 ]
