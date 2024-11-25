@@ -14,9 +14,11 @@ EventManager is a Django-based application for managing events and event signups
 - Jacob -> Auth Function, nessesary Sites
 - Paul -> Event CRUD Functions, Sites
 
-- [Design File](https://www.figma.com/design/3lYgoCyFllLugdj6BnF5iQ/Event-System-Python?node-id=0-1&node-type=canvas&t=MxmIjfFcAuDilQHE-0)
-
 For every functions you should create an seperate App (for example for the Auth an Auth App or the Filter an FilterApp)
+
+[Design File](https://www.figma.com/design/3lYgoCyFllLugdj6BnF5iQ/Event-System-Python?node-id=0-1&node-type=canvas&t=MxmIjfFcAuDilQHE-0)
+The design is more to show the general design idea, feel free to customize for your specific use case. It is more to give us all a rough idea. The primary color is purple in the design, if it is blue in the code, just leave it. 
+
 
 #### Create an App
 
