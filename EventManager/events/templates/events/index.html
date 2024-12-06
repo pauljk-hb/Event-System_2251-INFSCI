@@ -95,8 +95,8 @@
 
     <h1 class="mb-4 ms-5">Events</h1>
     <div class="d-flex px-5 gap-3 mb-5">
-      {% for event in events %}
-      <div class="card" style="width: 18rem">
+      {% for event in events %} {% if forloop.counter <= 4 %}
+      <div class="card flex-grow-1" style="width: 25%">
         <div class="card-body">
           <h5 class="card-title">{{ event.title }}</h5>
           <h6 class="card-subtitle mb-2 text-body-secondary">{{ event.type }}</h6>
@@ -104,7 +104,7 @@
           <a href="#" class="card-link">Card link</a>
         </div>
       </div>
-      {% endfor %}
+      {% endif %} {% endfor %}
     </div>
 
     <footer class="bg-body-tertiary text-center text-lg-start">
