@@ -1,20 +1,20 @@
 from django.shortcuts import render
+from events.models import Event
 
 def event_search(request):
   # Retrieve the search query from the GET parameters
   query = request.GET.get("search", "")
 
-
-  events = [
-      {"name": "Chess", "location": "Room 301", "time": '2:30', "tags":'chess, board game'},
-      {"name": "Uno", "location": "Room 502", "tags": 'uno, card'},
-  ]
+  # Retrieve all events
+  events = Event.objects.all()
 
   # Filter events based on the search query
-  filtered_events = [
-        event for event in events
-        if query in event["name"].lower() or query in event["location"].lower() or query in event["tags"].lower() 
-    ]
+  filtered_events = []
+
+  for event in events:
+    if query in event.title.lower():
+      filtered_events.append(event)
+    # or query in event["location"].lower() or query in event["tags"].lower() 
 
   # Pass filtered events to the template
   return render(request, "searchbox/event_search.html", {"events": filtered_events})

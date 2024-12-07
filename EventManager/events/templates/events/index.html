@@ -20,20 +20,24 @@
 
     <title>Document</title>
 
+    <link rel="stylesheet" href="{% static 'style/style.css' %}" />
+
     <style>
       .hero {
-        background-image: url("{% static 'events/hero.jpg' %}");
+        background-image: url("{% static 'images/hero.jpg' %}");
         min-height: 30rem;
         display: flex;
         flex-direction: column;
         justify-content: center;
+        background-size: cover;
+        background-position: center;
       }
     </style>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">Event System</a>
+        <a class="navbar-brand" href="#">Pitt Events</a>
         <button
           class="navbar-toggler"
           type="button"
@@ -48,13 +52,13 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Home</a>
+              <a class="nav-link active text-primary" aria-current="page" href="/">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Events</a>
+              <a class="nav-link" href="/events">Events</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Search</a>
+              <a class="nav-link" href="search/">Search</a>
             </li>
           </ul>
           <button class="btn btn-primary" type="submit">Go to Dashboard</button>
@@ -67,7 +71,7 @@
       <h2 class="h4 text-white text-center">Discover Activities, Connect with Others, and Make the Most of Campus Life!</h2>
     </div>
 
-    <div class="p-5">
+    <div class="py-5 px-3 container">
       <h3 class="h6 mb-4">Join a variety of events at Pitt to explore your interests, meet new people, and build unforgettable memories.</h3>
       <p>
         [Platform Name] is your gateway to an active and connected campus life at [University Name] in Pittsburgh. From sports tournaments to cultural
@@ -78,18 +82,18 @@
 
     <div class="px-5 d-flex gap-5 bg-primary bg-opacity-10 py-4 justify-content-center mb-5">
       <div class="text-center">
-        <i class="bi bi-calendar-fill text-primary"></i>
-        <p class="h5" style="width: 17rem">Stay Informed: Find all upcoming campus activities in one place.</p>
+        <i class="bi bi-calendar-fill text-primary fs-3"></i>
+        <p class="h5 mt-3" style="width: 17rem">Stay Informed: Find all upcoming campus activities in one place.</p>
       </div>
 
       <div class="text-center">
-        <i class="bi bi-person-fill text-primary"></i>
-        <p class="h5" style="width: 17rem">Easy Registration: Sign up for events with just a click.</p>
+        <i class="bi bi-person-fill text-primary fs-2"></i>
+        <p class="h5 mt-3" style="width: 17rem">Easy Registration: Sign up for events with just a click.</p>
       </div>
 
       <div class="text-center">
-        <i class="bi bi-compass-fill text-primary"></i>
-        <p class="h5" style="width: 17rem">Connect with Peers: Join a community of like-minded students and faculty.</p>
+        <i class="bi bi-compass-fill text-primary fs-3"></i>
+        <p class="h5 mt-3" style="width: 17rem">Connect with Peers: Join a community of like-minded students and faculty.</p>
       </div>
     </div>
 
@@ -110,7 +114,7 @@
     <footer class="bg-body-tertiary text-center text-lg-start">
       <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05)">
         © 2024 Copyright:
-        <a class="text-body" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+        <a class="text-body" href="#">Pitt Events</a>
       </div>
     </footer>
   </body>
