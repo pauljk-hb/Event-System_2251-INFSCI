@@ -37,7 +37,7 @@
   <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">Pitt Events</a>
+        <a class="navbar-brand" href="/">Pitt Events</a>
         <button
           class="navbar-toggler"
           type="button"
@@ -58,10 +58,14 @@
               <a class="nav-link" href="/events">Events</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="search/">Search</a>
+              <a class="nav-link" href="/search">Search</a>
             </li>
           </ul>
-          <button class="btn btn-primary" type="submit">Go to Dashboard</button>
+          {% if user.is_authenticated %}
+          <a class="btn btn-primary" href="/accounts/user_profile/">Go to Dashboard</a>
+          {% else %}
+          <a class="btn btn-primary" href="/accounts/login/">Login</a>
+          {% endif %}
         </div>
       </div>
     </nav>
@@ -97,18 +101,20 @@
       </div>
     </div>
 
-    <h1 class="mb-4 ms-5">Events</h1>
-    <div class="d-flex px-5 gap-3 mb-5">
-      {% for event in events %} {% if forloop.counter <= 4 %}
-      <div class="card flex-grow-1" style="width: 25%">
-        <div class="card-body">
-          <h5 class="card-title">{{ event.title }}</h5>
-          <h6 class="card-subtitle mb-2 text-body-secondary">{{ event.type }}</h6>
-          <p class="card-text">{{ event.description }}</p>
-          <a href="#" class="card-link">Card link</a>
+    <div class="container">
+      <h1 class="mb-4 ms-3">Events</h1>
+      <div class="d-flex px-3 gap-3 mb-5">
+        {% for event in events %} {% if forloop.counter <= 3 %}
+        <div class="card flex-grow-1" style="width: 33.3333%">
+          <div class="card-body">
+            <h5 class="card-title">{{ event.title }}</h5>
+            <h6 class="card-subtitle mb-2 text-body-secondary">{{ event.type }}</h6>
+            <p class="card-text">{{ event.description }}</p>
+            <a href="{% url 'event_detail' event.event_id %}" class="card-link">Card link</a>
+          </div>
         </div>
+        {% endif %} {% endfor %}
       </div>
-      {% endif %} {% endfor %}
     </div>
 
     <footer class="bg-body-tertiary text-center text-lg-start">

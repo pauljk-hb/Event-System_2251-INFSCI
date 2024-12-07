@@ -17,6 +17,6 @@ def event_search(request):
     # or query in event["location"].lower() or query in event["tags"].lower() 
 
   # Pass filtered events to the template
-  return render(request, "searchbox/event_search.html", {"events": filtered_events})
+  return render(request, "searchbox/event_search.html", {"events": filtered_events, "query": query})
 
 
