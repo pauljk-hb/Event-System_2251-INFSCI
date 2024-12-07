@@ -4,6 +4,7 @@ from django.contrib.auth import login, authenticate, logout
 from .forms import CustomUserCreationForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from events.models import EventSignup
 
 # View for user registration
 # Handles GET (show form) and POST (process registration)
@@ -53,6 +54,10 @@ def event_manager_profile(request):
 
 # Profile page for standard users
 # Only accessible to users with is_event_manager = False
+@login_required
 def user_profile(request):
-    return render(request, 'accounts/user_profile.html')
+    user = request.user
+    signups = EventSignup.objects.filter(user=user).select_related('event')
+    events = [signup.event for signup in signups]
+    return render(request, 'accounts/user_profile.html', {'user': user, 'events': events})
 

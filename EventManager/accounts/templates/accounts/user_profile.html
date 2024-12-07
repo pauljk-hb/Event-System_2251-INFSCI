@@ -81,13 +81,13 @@
             <h5 class="card-title">{{ event.title }}</h5>
             <h6 class="card-subtitle mb-2 text-body-secondary">{{ event.type }}</h6>
             <p class="card-text">{{ event.description }}</p>
-            <a href="#" class="card-link">Card link</a>
+            <a href="{% url 'event_detail' event.event_id %}" class="btn btn-outline-primary btn-sm"> View Details </a>
           </div>
         </div>
         {% empty %}
         <div class="d-flex flex-column">
-          <p>You have no events in the moment</p>
-          <a href="/events">Find evnets</a>
+          <p>You have no events at the moment</p>
+          <a href="/events">Find events</a>
         </div>
         {% endfor %}
       </div>
