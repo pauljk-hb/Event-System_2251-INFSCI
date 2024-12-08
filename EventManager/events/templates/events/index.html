@@ -35,9 +35,10 @@
     </style>
   </head>
   <body>
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">Pitt Events</a>
+        <a class="navbar-brand" href="/">Pitt Events</a>
         <button
           class="navbar-toggler"
           type="button"
@@ -58,10 +59,16 @@
               <a class="nav-link" href="/events">Events</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="search/">Search</a>
+              <a class="nav-link" href="/search">Search</a>
             </li>
           </ul>
-          <button class="btn btn-primary" type="submit">Go to Dashboard</button>
+          {% if user.is_authenticated %} {% if user.is_event_manager %}
+          <a class="btn btn-primary" href="{% url 'event_manager_profile' %}">Go to Manager Dashboard</a>
+          {% else %}
+          <a class="btn btn-primary" href="{% url 'user_profile' %}">Go to Dashboard</a>
+          {% endif %} {% else %}
+          <a class="btn btn-primary" href="{% url 'login' %}">Login</a>
+          {% endif %}
         </div>
       </div>
     </nav>
@@ -74,7 +81,7 @@
     <div class="py-5 px-3 container">
       <h3 class="h6 mb-4">Join a variety of events at Pitt to explore your interests, meet new people, and build unforgettable memories.</h3>
       <p>
-        [Platform Name] is your gateway to an active and connected campus life at [University Name] in Pittsburgh. From sports tournaments to cultural
+        Pitt Events is your gateway to an active and connected campus life at [University Name] in Pittsburgh. From sports tournaments to cultural
         workshops, our platform helps you discover, join, and create events that match your interests. Whether you're looking to make new friends or
         explore new hobbies, we've got something for everyone!
       </p>
@@ -83,32 +90,34 @@
     <div class="px-5 d-flex gap-5 bg-primary bg-opacity-10 py-4 justify-content-center mb-5">
       <div class="text-center">
         <i class="bi bi-calendar-fill text-primary fs-3"></i>
-        <p class="h5 mt-3" style="width: 17rem">Stay Informed: Find all upcoming campus activities in one place.</p>
+        <p class="h6 mt-3" style="width: 17rem">Stay Informed: Find all upcoming campus activities in one place.</p>
       </div>
 
       <div class="text-center">
         <i class="bi bi-person-fill text-primary fs-2"></i>
-        <p class="h5 mt-3" style="width: 17rem">Easy Registration: Sign up for events with just a click.</p>
+        <p class="h6 mt-2" style="width: 17rem">Easy Registration: Sign up for events with just a click.</p>
       </div>
 
       <div class="text-center">
         <i class="bi bi-compass-fill text-primary fs-3"></i>
-        <p class="h5 mt-3" style="width: 17rem">Connect with Peers: Join a community of like-minded students and faculty.</p>
+        <p class="h6 mt-3" style="width: 17rem">Connect with Peers: Join a community of like-minded students and faculty.</p>
       </div>
     </div>
 
-    <h1 class="mb-4 ms-5">Events</h1>
-    <div class="d-flex px-5 gap-3 mb-5">
-      {% for event in events %} {% if forloop.counter <= 4 %}
-      <div class="card flex-grow-1" style="width: 25%">
-        <div class="card-body">
-          <h5 class="card-title">{{ event.title }}</h5>
-          <h6 class="card-subtitle mb-2 text-body-secondary">{{ event.type }}</h6>
-          <p class="card-text">{{ event.description }}</p>
-          <a href="#" class="card-link">Card link</a>
+    <div class="container">
+      <h1 class="mb-4">Events</h1>
+      <div class="d-flex gap-3 mb-5">
+        {% for event in events %} {% if forloop.counter <= 3 %}
+        <div class="card flex-grow-1" style="width: 25%">
+          <div class="card-body">
+            <h5 class="card-title">{{ event.title }}</h5>
+            <h6 class="card-subtitle mb-2 text-body-secondary">{{ event.type }}</h6>
+            <p class="card-text">{{ event.description }}</p>
+            <a href="#" class="card-link">Card link</a>
+          </div>
         </div>
+        {% endif %} {% endfor %}
       </div>
-      {% endif %} {% endfor %}
     </div>
 
     <footer class="bg-body-tertiary text-center text-lg-start">

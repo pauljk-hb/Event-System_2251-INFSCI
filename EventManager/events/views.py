@@ -11,9 +11,28 @@ def index(request):
 
 def events(request):
     all_events = Event.objects.all()
+
+    all_events = all_events.filter(time__gt=now())
+
+    tags = set()
+    for event in all_events:
+        tags.update(event.tags.split(','))
+
+    tag_filter = request.GET.get('tag')
+    if tag_filter:
+        all_events = all_events.filter(tags__icontains=tag_filter)
+
+    sort_by = request.GET.get('sort_by', 'time')
+    if sort_by == 'title':
+        all_events = all_events.order_by('title')
+    elif sort_by == 'type':
+        all_events = all_events.order_by('type')
+    else:
+        all_events = all_events.order_by('time')
+
     for event in all_events:
         event.split_tags = event.tags.split(',')
-    return render(request, 'events/events.html', {'events': all_events})
+    return render(request, 'events/events.html', {'events': all_events, 'tags': tags, 'selected_tag': tag_filter})
 
 def event_detail(request, event_id):
     # Hole das Event anhand der ID oder zeige 404-Seite
@@ -40,3 +59,7 @@ def event_detail(request, event_id):
     
 
     return render(request, 'events/event_detail.html', {'event': event})
+
+def history_events(request):
+    events = Event.objects.filter(time__lt=now())
+    return render(request, 'events/history_events.html', {'events': events})

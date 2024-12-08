@@ -43,16 +43,18 @@
               <a class="nav-link" href="/">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/events">Events</a>
+              <a class="nav-link active text-primary" aria-current="page" href="/events">Events</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active text-primary" aria-current="page" href="/search">Search</a>
+              <a class="nav-link" href="/search">Search</a>
             </li>
           </ul>
-          {% if user.is_authenticated %}
-          <a class="btn btn-primary" href="/accounts/user_profile/">Go to Dashboard</a>
+          {% if user.is_authenticated %} {% if user.is_event_manager %}
+          <a class="btn btn-primary" href="{% url 'event_manager_profile' %}">Go to Manager Dashboard</a>
           {% else %}
-          <a class="btn btn-primary" href="/accounts/login/">Login</a>
+          <a class="btn btn-primary" href="{% url 'user_profile' %}">Go to Dashboard</a>
+          {% endif %} {% else %}
+          <a class="btn btn-primary" href="{% url 'login' %}">Login</a>
           {% endif %}
         </div>
       </div>
@@ -66,18 +68,30 @@
           <button class="btn btn-primary" type="submit">Search</button>
         </form>
       </div>
-      <div class="mb-5">
+
+      <div class="mb-5 events">
         {% for event in events %}
-        <div class="card mb-4">
-          <div class="card-body">
-            <h5 class="card-title">{{ event.title }}</h5>
-            <h6 class="card-subtitle mb-2 text-body-secondary">{{ event.type }}</h6>
-            <p class="card-text">{{ event.description }}</p>
-            <a href="#" class="card-link">Card link</a>
+        <div class="card mb-4 shadow-sm">
+          <div class="row g-0">
+            <div class="col-md-8">
+              <div class="card-body">
+                <h2 class="card-title text-primary">{{ event.title }}</h2>
+                <h5 class="card-subtitle text-body-secondary">{{ event.type }}</h5>
+                <div class="my-4">
+                  <p class="card-text text-truncate" style="max-height: 4.5em">{{ event.description }}</p>
+                </div>
+                <h6 class="card-subtitle mb-2 text-muted"><i class="bi bi-calendar-fill"></i> {{ event.time|date:"j F Y, g:i A" }}</h6>
+                <h6 class="card-subtitle mb-2 text-muted"><i class="bi bi-geo-alt-fill"></i> {{ event.location }}</h6>
+                <div class="mb-3">
+                  {% for tag in event.split_tags %}
+                  <span class="badge text-bg-light">{{ tag }}</span>
+                  {% endfor %}
+                </div>
+                <a href="{% url 'event_detail' event.event_id %}" class="btn btn-outline-primary btn-sm"> View Details </a>
+              </div>
+            </div>
           </div>
         </div>
-        {% empty %}
-        <p>No events found matching your search.</p>
         {% endfor %}
       </div>
     </div>

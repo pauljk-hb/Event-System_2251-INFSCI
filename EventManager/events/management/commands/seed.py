@@ -1,15 +1,31 @@
 from django.core.management.base import BaseCommand
 from events.models import Event
 from django.utils import timezone
+from accounts.models import CustomUser
+from django.contrib.auth import get_user_model
 
 class Command(BaseCommand):
     help = 'Seed the database with 25 specific university-related events in Pittsburgh'
 
     def handle(self, *args, **kwargs):
-        # Bestehende Daten löschen, um Dubletten zu vermeiden
+        # Bestehende Events löschen, um Duplikate zu vermeiden
         Event.objects.all().delete()
 
-        # Hardcodierte Events
+        # Benutzer-Modell abrufen
+        User = get_user_model()
+
+        # Manager erstellen
+        manager, created = CustomUser.objects.get_or_create(
+            username="event_manager",
+            email="manager@example.com",
+            defaults={"password": "securepassword123", "is_event_manager": True},
+        )
+
+        if created:
+            self.stdout.write(self.style.SUCCESS('Event manager account created.'))
+
+
+        # Events erstellen
         events = [
             {
                 "title": "Campus Tour",
@@ -20,6 +36,7 @@ class Command(BaseCommand):
                 "tags": "Campus,Students,Community",
                 "latitude": 40.4425,
                 "longitude": -79.9531,
+                "organizer": manager,
             },
             {
                 "title": "AI Research Seminar",
@@ -30,6 +47,7 @@ class Command(BaseCommand):
                 "tags": "Research,Technology,Students",
                 "latitude": 40.4445,
                 "longitude": -79.9562,
+                "organizer": manager,
             },
             {
                 "title": "Football Night",
@@ -40,6 +58,7 @@ class Command(BaseCommand):
                 "tags": "Sports,Community,Students",
                 "latitude": 40.4470,
                 "longitude": -80.0150,
+                "organizer": manager,
             },
             {
                 "title": "Pitt Arts Night",
@@ -50,6 +69,7 @@ class Command(BaseCommand):
                 "tags": "Arts,Culture,Community",
                 "latitude": 40.4416,
                 "longitude": -79.9559,
+                "organizer": manager,
             },
             {
                 "title": "Entrepreneurship Workshop",
@@ -60,6 +80,7 @@ class Command(BaseCommand):
                 "tags": "Business,Innovation,Students",
                 "latitude": 40.4406,
                 "longitude": -79.9959,
+                "organizer": manager,
             },
             {
                 "title": "Library Orientation",
@@ -70,6 +91,7 @@ class Command(BaseCommand):
                 "tags": "Library,Students,Resources",
                 "latitude": 40.4422,
                 "longitude": -79.9556,
+                "organizer": manager,
             },
             {
                 "title": "Career Fair",
@@ -80,6 +102,7 @@ class Command(BaseCommand):
                 "tags": "Jobs,Students,Networking",
                 "latitude": 40.4438,
                 "longitude": -79.9535,
+                "organizer": manager,
             },
             {
                 "title": "Coding Hackathon",
@@ -90,6 +113,7 @@ class Command(BaseCommand):
                 "tags": "Coding,Technology,Students",
                 "latitude": 40.4436,
                 "longitude": -79.9577,
+                "organizer": manager,
             },
             {
                 "title": "Music Jam Session",
@@ -100,6 +124,7 @@ class Command(BaseCommand):
                 "tags": "Music,Community,Students",
                 "latitude": 40.4420,
                 "longitude": -79.9563,
+                "organizer": manager,
             },
             {
                 "title": "Wellness Workshop",
@@ -110,6 +135,7 @@ class Command(BaseCommand):
                 "tags": "Wellness,Health,Students",
                 "latitude": 40.4457,
                 "longitude": -79.9530,
+                "organizer": manager,
             },
             {
                 "title": "Study Abroad Info Session",
@@ -120,6 +146,7 @@ class Command(BaseCommand):
                 "tags": "Study Abroad,Students,Global",
                 "latitude": 40.4423,
                 "longitude": -79.9552,
+                "organizer": manager,
             },
             {
                 "title": "Debate Club Meeting",
@@ -130,6 +157,7 @@ class Command(BaseCommand):
                 "tags": "Debate,Community,Students",
                 "latitude": 40.4425,
                 "longitude": -79.9531,
+                "organizer": manager,
             },
             {
                 "title": "Photography Workshop",
@@ -140,6 +168,7 @@ class Command(BaseCommand):
                 "tags": "Photography,Art,Students",
                 "latitude": 40.4443,
                 "longitude": -79.9607,
+                "organizer": manager,
             },
             {
                 "title": "Game Night",
@@ -150,6 +179,7 @@ class Command(BaseCommand):
                 "tags": "Games,Community,Students",
                 "latitude": 40.4452,
                 "longitude": -79.9554,
+                "organizer": manager,
             },
             {
                 "title": "Open Mic Night",
@@ -160,79 +190,154 @@ class Command(BaseCommand):
                 "tags": "Music,Performance,Students",
                 "latitude": 40.4438,
                 "longitude": -79.9535,
+                "organizer": manager,
             },
             {
-                "title": "Yoga in the Park",
-                "description": "Relax and unwind with yoga in Schenley Park.",
+                "title": "Startup Pitch Night",
+                "description": "Pitch your startup ideas to investors and get valuable feedback.",
                 "time": timezone.now() + timezone.timedelta(days=16),
-                "location": "Schenley Park, Pittsburgh",
-                "type": "Health",
-                "tags": "Yoga,Wellness,Students",
-                "latitude": 40.4418,
-                "longitude": -79.9463,
+                "location": "University of Pittsburgh, Mervis Hall",
+                "type": "Startup Event",
+                "tags": "Business,Innovation,Entrepreneurship",
+                "latitude": 40.4406,
+                "longitude": -79.9959,
+                "organizer": manager,
             },
             {
-                "title": "Pitt Robotics Showcase",
-                "description": "See what our robotics team has been building.",
-                "time": timezone.now() - timezone.timedelta(days=17),
+                "title": "TEDx Pitt Conference",
+                "description": "A day of inspirational talks from diverse speakers.",
+                "time": timezone.now() + timezone.timedelta(days=17),
+                "location": "University of Pittsburgh, William Pitt Union",
+                "type": "Conference",
+                "tags": "TEDx,Inspiration,Technology,Ideas",
+                "latitude": 40.4438,
+                "longitude": -79.9535,
+                "organizer": manager,
+            },
+            {
+                "title": "Sustainability Fair",
+                "description": "Explore sustainable practices and eco-friendly solutions.",
+                "time": timezone.now() + timezone.timedelta(days=18),
+                "location": "University of Pittsburgh, Schenley Plaza",
+                "type": "Sustainability",
+                "tags": "Sustainability,Environment,Community",
+                "latitude": 40.4430,
+                "longitude": -79.9545,
+                "organizer": manager,
+            },
+            {
+                "title": "VR Experience Night",
+                "description": "Experience the latest in Virtual Reality technology.",
+                "time": timezone.now() + timezone.timedelta(days=19),
                 "location": "University of Pittsburgh, Benedum Hall",
                 "type": "Technology",
-                "tags": "Robotics,Technology,Students",
+                "tags": "Virtual Reality,Technology,Students",
                 "latitude": 40.4436,
                 "longitude": -79.9577,
+                "organizer": manager,
             },
             {
-                "title": "Student Film Screening",
-                "description": "Watch short films made by Pitt students.",
-                "time": timezone.now() - timezone.timedelta(days=18),
+                "title": "Hack the Planet",
+                "description": "Join us for a 48-hour hackathon focused on solving global issues.",
+                "time": timezone.now() + timezone.timedelta(days=20),
+                "location": "University of Pittsburgh, Alumni Hall",
+                "type": "Hackathon",
+                "tags": "Hackathon,Technology,Innovation",
+                "latitude": 40.4402,
+                "longitude": -79.9543,
+                "organizer": manager,
+            },
+            {
+                "title": "Poetry Slam",
+                "description": "Share your poetry or enjoy performances by talented poets.",
+                "time": timezone.now() + timezone.timedelta(days=21),
+                "location": "University of Pittsburgh, Cathedral of Learning",
+                "type": "Cultural",
+                "tags": "Poetry,Arts,Students",
+                "latitude": 40.4425,
+                "longitude": -79.9531,
+                "organizer": manager,
+            },
+            {
+                "title": "Environmental Science Symposium",
+                "description": "Join experts to discuss pressing environmental issues and solutions.",
+                "time": timezone.now() + timezone.timedelta(days=22),
+                "location": "University of Pittsburgh, Environmental Science Department",
+                "type": "Academic",
+                "tags": "Environment,Science,Academic",
+                "latitude": 40.4415,
+                "longitude": -79.9530,
+                "organizer": manager,
+            },
+            {
+                "title": "Film Screening: Documentary Night",
+                "description": "Watch and discuss a thought-provoking documentary film.",
+                "time": timezone.now() + timezone.timedelta(days=23),
                 "location": "University of Pittsburgh, Frick Fine Arts Building",
                 "type": "Cultural",
-                "tags": "Film,Art,Students",
+                "tags": "Film,Documentary,Arts",
                 "latitude": 40.4416,
                 "longitude": -79.9559,
+                "organizer": manager,
             },
             {
-                "title": "Welcome Back Bash",
-                "description": "Start the semester with music, food, and fun.",
-                "time": timezone.now() - timezone.timedelta(days=30),
-                "location": "University of Pittsburgh, Schenley Quad",
-                "type": "Social",
-                "tags": "Welcome,Social,Students",
-                "latitude": 40.4437,
-                "longitude": -79.9532,
+                "title": "Meditation and Yoga Session",
+                "description": "Join us for a peaceful morning of meditation and yoga.",
+                "time": timezone.now() - timezone.timedelta(days=24),
+                "location": "University of Pittsburgh, Bellefield Hall",
+                "type": "Health",
+                "tags": "Wellness,Meditation,Yoga",
+                "latitude": 40.4420,
+                "longitude": -79.9563,
+                "organizer": manager,
             },
             {
-                "title": "Movie Night: Inception",
-                "description": "Enjoy a screening of 'Inception' with snacks provided.",
-                "time": timezone.now() - timezone.timedelta(days=7),
-                "location": "University of Pittsburgh, William Pitt Union",
-                "type": "Recreational",
-                "tags": "Movie,Snacks,Social",
-                "latitude": 40.4435,
-                "longitude": -79.9543,
+                "title": "Pittsburgh History Walk",
+                "description": "Discover the history and culture of Pittsburgh on a guided walk.",
+                "time": timezone.now() - timezone.timedelta(days=25),
+                "location": "Pittsburgh, Downtown Area",
+                "type": "Tour",
+                "tags": "History,Culture,Community",
+                "latitude": 40.4406,
+                "longitude": -79.9959,
+                "organizer": manager,
             },
             {
-                "title": "Campus Cleanup Day",
-                "description": "Join us to keep our campus clean and green.",
-                "time": timezone.now() - timezone.timedelta(days=20),
-                "location": "University of Pittsburgh, Cathedral Lawn",
-                "type": "Community Service",
-                "tags": "Cleanup,Volunteering,Environment",
-                "latitude": 40.4446,
-                "longitude": -79.9531,
+                "title": "Coding Bootcamp: Web Development",
+                "description": "Learn the basics of web development in this hands-on coding bootcamp.",
+                "time": timezone.now() - timezone.timedelta(days=26),
+                "location": "University of Pittsburgh, Benedum Hall",
+                "type": "Workshop",
+                "tags": "Coding,Technology,Students",
+                "latitude": 40.4436,
+                "longitude": -79.9577,
+                "organizer": manager,
             },
             {
-                "title": "Midterm Stress Relief Yoga",
-                "description": "Relax and destress with a guided yoga session.",
-                "time": timezone.now() - timezone.timedelta(days=10),
-                "location": "University of Pittsburgh, Gymnasium",
-                "type": "Wellness",
-                "tags": "Yoga,Stress Relief,Health",
-                "latitude": 40.4442,
-                "longitude": -79.9535,
+                "title": "International Food Festival",
+                "description": "Taste dishes from around the world and learn about different cultures.",
+                "time": timezone.now() - timezone.timedelta(days=27),
+                "location": "University of Pittsburgh, Schenley Plaza",
+                "type": "Cultural",
+                "tags": "Food,Culture,Community",
+                "latitude": 40.4430,
+                "longitude": -79.9545,
+                "organizer": manager,
+            },
+            {
+                "title": "Art Exhibit: Local Artists Showcase",
+                "description": "Explore artwork created by local artists in this special exhibit.",
+                "time": timezone.now() - timezone.timedelta(days=28),
+                "location": "University of Pittsburgh, Frick Fine Arts Building",
+                "type": "Cultural",
+                "tags": "Art,Exhibition,Community",
+                "latitude": 40.4416,
+                "longitude": -79.9559,
+                "organizer": manager,
             },
         ]
 
+        # Events in die Datenbank einfügen
         for event_data in events:
             Event.objects.create(**event_data)
 

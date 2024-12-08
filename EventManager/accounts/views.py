@@ -67,7 +67,8 @@ def event_manager_profile(request):
             type=event_type,
             tags=tags,
             latitude= 40.4406,
-            longitude= 79.9959,
+            longitude= -79.9959,
+            organizer=request.user
             )
 
         # Speichern des Event-Objekts in der Datenbank
@@ -75,8 +76,11 @@ def event_manager_profile(request):
 
         messages.success(request, 'Event created successfully!')
         return redirect('event_manager_profile')
+    
+    user = request.user
+    events = Event.objects.filter(organizer=request.user)
 
-    return render(request, 'accounts/event_manager_profile.html')
+    return render(request, 'accounts/event_manager_profile.html', {'user': user, 'events': events})
 
 # Profile page for standard users
 # Only accessible to users with is_event_manager = False

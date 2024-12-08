@@ -61,22 +61,39 @@
     </nav>
 
     <div class="container mt-5">
-      <div class="d-flex justify-content-between mb-4">
-        <h1 class="">Events</h1>
-        <div class="d-flex align-items-center justify-content-center gap-2">
-          <p class="mb-0">Sort</p>
-          <select class="form-select" aria-label="Default select example">
-            <option value="1">Date</option>
-            <option value="2">Title</option>
-            <option value="3">Type</option>
-          </select>
+      <form method="get" action="{% url 'event_list' %}">
+        <div class="d-flex justify-content-between mb-4">
+          <h1 class="">Events</h1>
+          <div class="d-flex align-items-center justify-content-center gap-4">
+
+            <div class="d-flex align-items-center justify-content-center gap-2">
+              <p class="mb-0 text-nowrap">Filter by Tag</p>
+              <select class="form-select" name="tag" aria-label="Tag Filter">
+                <option value="">No Filter</option>
+                {% for tag in tags %}
+                  <option value="{{ tag }}" {% if tag == selected_tag %} selected {% endif %}>{{ tag }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="d-flex align-items-center justify-content-center gap-2">
+              <p class="mb-0 text-nowrap">Sort by</p>
+              <select class="form-select" name="sort_by" aria-label="Sort">
+                <option value="time" {% if request.GET.sort_by == "time" %} selected {% endif %}>Date</option>
+                <option value="title" {% if request.GET.sort_by == "title" %} selected {% endif %}>Title</option>
+                <option value="type" {% if request.GET.sort_by == "type" %} selected {% endif %}>Type</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Apply</button>
+          </div>
         </div>
-      </div>
+      </form>
+
       <div class="mb-5 events">
         {% for event in events %}
         <div class="card mb-4 shadow-sm">
           <div class="row g-0">
-            <div class="col-md-8">
+            <div>
               <div class="card-body">
                 <h2 class="card-title text-primary">{{ event.title }}</h2>
                 <h5 class="card-subtitle text-body-secondary">{{ event.type }}</h5>

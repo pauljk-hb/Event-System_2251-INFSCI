@@ -2,3 +2,9 @@
   max-width: 65rem;
   margin: 0 auto;
 }
+
+.events {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
