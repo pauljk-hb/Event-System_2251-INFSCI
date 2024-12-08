@@ -47,10 +47,12 @@
               <a class="nav-link" href="/search">Search</a>
             </li>
           </ul>
-          {% if user.is_authenticated %}
-          <a class="btn btn-primary" href="/accounts/user_profile/">Go to Dashboard</a>
+          {% if user.is_authenticated %} {% if user.is_event_manager %}
+          <a class="btn btn-primary" href="{% url 'event_manager_profile' %}">Go to Manager Dashboard</a>
           {% else %}
-          <a class="btn btn-primary" href="/accounts/login/">Login</a>
+          <a class="btn btn-primary" href="{% url 'user_profile' %}">Go to Dashboard</a>
+          {% endif %} {% else %}
+          <a class="btn btn-primary" href="{% url 'login' %}">Login</a>
           {% endif %}
         </div>
       </div>
@@ -63,24 +65,23 @@
           <p>Email: {{ user.email }}</p>
           <p>Role: Standard User</p>
 
-          <h2>Available Actions</h2>
-          <ul>
-            <li><a href="{% url 'logout' %}">Logout</a></li>
-            <!-- Add other standard user links or actions here -->
-          </ul>
+          <a class="btn btn-outline-danger" href="{% url 'logout' %}">Logout</a>
         </div>
       </div>
     </div>
 
-    <div class="container">
-      <h1 class="mb-4 ms-3">My Events</h1>
-      <div class="d-flex px-3 gap-3 mb-5">
+    <div class="container mb-5">
+      <h1 class="mb-4">My Events</h1>
+      <div class="grid-container">
         {% for event in events %}
         <div class="card flex-grow-1" style="width: 33.3333%">
           <div class="card-body">
             <h5 class="card-title">{{ event.title }}</h5>
             <h6 class="card-subtitle mb-2 text-body-secondary">{{ event.type }}</h6>
+            <p class="card-subtitle mb-2 text-muted"><i class="bi bi-calendar-fill"></i> {{ event.time|date:"j F Y, g:i A" }}</p>
+            <p class="card-subtitle mb-2 text-muted"><i class="bi bi-geo-alt-fill"></i> {{ event.location }}</p>
             <p class="card-text">{{ event.description }}</p>
+
             <a href="{% url 'event_detail' event.event_id %}" class="btn btn-outline-primary btn-sm"> View Details </a>
           </div>
         </div>

@@ -21,16 +21,6 @@
     <title>Document</title>
 
     <link rel="stylesheet" href="{% static 'style/style.css' %}" />
-
-    <style>
-      .hero {
-        background-image: url("{% static 'events/hero.jpg' %}");
-        min-height: 30rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-      }
-    </style>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -59,10 +49,12 @@
               <a class="nav-link" href="/search">Search</a>
             </li>
           </ul>
-          {% if user.is_authenticated %}
-          <a class="btn btn-primary" href="/accounts/user_profile/">Go to Dashboard</a>
+          {% if user.is_authenticated %} {% if user.is_event_manager %}
+          <a class="btn btn-primary" href="{% url 'event_manager_profile' %}">Go to Manager Dashboard</a>
           {% else %}
-          <a class="btn btn-primary" href="/accounts/login/">Login</a>
+          <a class="btn btn-primary" href="{% url 'user_profile' %}">Go to Dashboard</a>
+          {% endif %} {% else %}
+          <a class="btn btn-primary" href="{% url 'login' %}">Login</a>
           {% endif %}
         </div>
       </div>
@@ -80,7 +72,7 @@
           </select>
         </div>
       </div>
-      <div class="mb-5">
+      <div class="mb-5 events">
         {% for event in events %}
         <div class="card mb-4 shadow-sm">
           <div class="row g-0">
@@ -91,10 +83,8 @@
                 <div class="my-4">
                   <p class="card-text text-truncate" style="max-height: 4.5em">{{ event.description }}</p>
                 </div>
-                <div class="d-flex gap-2">
-                  <h6 class="card-subtitle mb-2 text-muted"><i class="bi bi-calendar-fill"></i> {{ event.time|date:"j F Y, g:i A" }}</h6>
-                  <h6 class="card-subtitle mb-2 text-muted"><i class="bi bi-geo-alt-fill"></i> {{ event.location }}</h6>
-                </div>
+                <h6 class="card-subtitle mb-2 text-muted"><i class="bi bi-calendar-fill"></i> {{ event.time|date:"j F Y, g:i A" }}</h6>
+                <h6 class="card-subtitle mb-2 text-muted"><i class="bi bi-geo-alt-fill"></i> {{ event.location }}</h6>
                 <div class="mb-3">
                   {% for tag in event.split_tags %}
                   <span class="badge text-bg-light">{{ tag }}</span>

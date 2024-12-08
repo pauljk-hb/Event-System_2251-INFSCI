@@ -4,7 +4,7 @@ from django.contrib.auth import login, authenticate, logout
 from .forms import CustomUserCreationForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from events.models import EventSignup
+from events.models import EventSignup, Event
 
 # View for user registration
 # Handles GET (show form) and POST (process registration)
@@ -49,6 +49,30 @@ def logout_view(request):
 def event_manager_profile(request):
     if not request.user.is_event_manager:
         return redirect('user_profile')
+
+    if request.method == 'POST':
+        title = request.POST['title']
+        description = request.POST['description']
+        location = request.POST['location']
+        time = request.POST['time']
+        event_type = request.POST['type']
+        tags = request.POST['tags']
+
+        # Erstellen eines neuen Event-Objekts
+        event = Event(
+            title=title,
+            description=description,
+            location=location,
+            time=time,
+            type=event_type,
+            tags=tags
+        )
+
+        # Speichern des Event-Objekts in der Datenbank
+        event.save()
+
+        messages.success(request, 'Event created successfully!')
+        return redirect('event_manager_profile')
 
     return render(request, 'accounts/event_manager_profile.html')
 
