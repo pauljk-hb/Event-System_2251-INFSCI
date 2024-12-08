@@ -62,4 +62,5 @@ def event_detail(request, event_id):
 
 def history_events(request):
     events = Event.objects.filter(time__lt=now())
+    events = events.order_by('-time')
     return render(request, 'events/history_events.html', {'events': events})

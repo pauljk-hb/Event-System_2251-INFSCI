@@ -60,7 +60,7 @@
       </div>
     </nav>
 
-    <div class="container mt-5">
+    <div class="container my-5">
       <form method="get" action="{% url 'event_list' %}">
         <div class="d-flex justify-content-between mb-4">
           <h1 class="">Events</h1>
@@ -114,6 +114,7 @@
         </div>
         {% endfor %}
       </div>
+      <a class="btn btn-outline-primary" href="/events/old">Historic Events</a>
     </div>
 
     <footer class="bg-body-tertiary text-center text-lg-start">
