@@ -67,7 +67,8 @@ def event_manager_profile(request):
             type=event_type,
             tags=tags,
             latitude= 40.4406,
-            longitude= 79.9959,)
+            longitude= 79.9959,
+            )
 
         # Speichern des Event-Objekts in der Datenbank
         event.save()
