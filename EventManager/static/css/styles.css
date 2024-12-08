@@ -1,0 +1,152 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    background: #FFFFFF;
+}
+
+/* General Navbar */
+.navbar {
+    display: flex;
+    align-items: center;          /* Vertically align items */
+    justify-content: center;      /* Center the navbar content */
+    padding: 8px 16px;
+    width: 100%;
+    height: 56px;
+    background: #F8F9FA;          /* Light gray background */
+    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1); /* Optional shadow */
+    position: fixed;              /* Ensure the navbar stays at the top */
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+/* Navbar Container (For Flexbox Control) */
+.navbar-container {
+    display: flex;
+    align-items: center;          /* Vertically align logo and links */
+    justify-content: flex-start;  /*Align everything to the left */
+    width: 100%;
+    max-width: 1280px;           /* Limit the navbar width for better spacing */
+    margin: 0 0;               /* Center the container horizontally */
+}
+
+/* Logo Section */
+.logo {
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+    color: #343A40; /* Dark gray */
+    margin: 0;
+    padding-right: 16px; /* Add space between logo and nav links */
+}
+
+/* Navbar Navigation Links */
+.navbar-nav {
+    display: flex;       /* Align items horizontally */
+    flex-direction: row; /* Horizontal layout */
+    gap: 16px;           /* Space between navigation links */
+}
+
+.NavLink {
+    text-decoration: none;      /* Remove underline */
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: #6C757D;             /* Default link color */
+    padding: 8px 12px;          /* Add clickable area */
+    transition: color 0.3s ease; /* Smooth hover transition */
+}
+
+.NavLink:hover {
+    color: #5227CC; /* Change color on hover */
+}
+
+/* Login Card */
+.cardLink {
+    display: flex;                /* Flexbox for alignment */
+    flex-direction: column;       /* Keep content stacked vertically */
+    align-items: center;          /* Center horizontally */
+    justify-content: center;      /* Center vertically */
+    padding: 24px;
+    gap: 16px;                    /* Space between elements */
+    width: 416px;
+    height: auto;                 /* Adjust height dynamically */
+    margin: 0 auto;               /* Center the card horizontally on the page */
+    background: #FFFFFF;
+    border: 1px solid #DEE2E6;    /* Light border */
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    text-align: center;           /* Center text inside the card */
+}
+
+/* Stack container for card title */
+.stack {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.CardTitle {
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 29px;
+    color: #152536; /* Heading/Title Color */
+    margin: 0;
+}
+
+/* Input fields */
+.input {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+}
+
+.content input {
+    /* width: 80%;                  Set input width to 80% of the card width */
+    max-width: 300px;            /*Ensure it doesn't stretch too much */
+    padding: 8px;                /* Add padding inside the input fields */
+    border: 1px solid #DEE2E6;   /* Light border */
+    border-radius: 6px;          /* Rounded corners */
+    font-size: 16px;             /* Consistent font size */
+    text-align: left;            /* Align text inside input fields to the left */
+}
+
+
+/* Buttons */
+.Button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 24px;
+    background: #7749F8; /* Primary/Color */
+    border-radius: 6px;
+    border: none;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 18px;
+    color: #FFFFFF; /* Default/White */
+    text-align: center;
+    width: 100%;
+    cursor: pointer;
+}
+
+.Button:hover {
+    background: #5227CC; /* Darker primary color */
+}
+
+/* Link */
+.Link a {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 20px;
+    color: #7749F8; /* Primary/Color */
+    text-decoration: none;
+}
+
+.Link a:hover {
+    color: #5227CC;
+}
