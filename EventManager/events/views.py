@@ -56,7 +56,7 @@ def event_detail(request, event_id):
             messages.error(request, "You need to log in to register for an event.")
             return HttpResponseRedirect(reverse('login'))
 
-    return render(request, 'events/event_detail.html', {'event': event, 'signup_count': signup_count})
+    return render(request, 'events/event_detail.html', {'event': event, 'signup_count': signup_count, 'now': now()})
 
 def history_events(request):
     events = Event.objects.filter(time__lt=now())
