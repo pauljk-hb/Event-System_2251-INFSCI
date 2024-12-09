@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -18,6 +19,33 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <title>{{ event.title }}</title>
+
+    <style>
+      .hero {
+        position: relative;
+        height: 19rem;
+        background-image: url('{% static "images/pittsburgh.jpg" %}');
+        background-size: cover;
+        background-position: center;
+        color: white;
+      }
+
+      .hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 1;
+      }
+
+      .hero > .d-flex {
+        position: relative;
+        z-index: 2;
+      }
+    </style>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -57,40 +85,52 @@
       </div>
     </nav>
 
-    <!-- Event Details -->
+    <!-- Hero Section -->
+    <div class="bg-dark text-white text-center hero">
+      <div class="d-flex h-100 align-items-center justify-content-center">
+        <div>
+          <h1 class="display-4">{{ event.title }}</h1>
+          <p class="lead">{{ event.subtitle }}</p>
+        </div>
+      </div>
+    </div>
+
     <div class="container py-5">
       <div class="row">
         <div class="col-lg-8 mx-auto">
-          <div class="mb-4">
-            <h2>{{ event.title }}</h2>
+          <div class="event-header mb-4 text-center">
+            <h2 class="event-title">{{ event.title }}</h2>
+            <p class="text-muted">{{ event.type }}</p>
           </div>
-          <div>
+
+          <div class="event-details bg-light p-4 rounded shadow-sm">
             <p><strong>Description:</strong> {{ event.description }}</p>
             <p><strong>Location:</strong> {{ event.location }}</p>
-            <p><strong>Date & Time:</strong> {{ event.time|date:"j F Y, g:i A" }}</p>
-            <p><strong>Type:</strong> {{ event.type }}</p>
+            <p>
+              <strong>Date & Time:</strong>
+              <span class="badge bg-primary">{{ event.time|date:"j F Y, g:i A" }}</span>
+            </p>
             <p><strong>Organizer:</strong> {{ event.organizer.username }}</p>
             <p>
               <strong>Tags:</strong>
               {% for tag in event.split_tags %}
-              <span class="badge text-bg-light">{{ tag }}</span>
+              <span class="badge bg-secondary">{{ tag }}</span>
               {% endfor %}
             </p>
+            <p><strong>Signups:</strong> {{ signup_count }}</p>
           </div>
 
           <div id="map" style="height: 400px; margin-top: 20px"></div>
 
-          <div class="mt-4">
+          <div class="mt-4 text-center">
             {% if user.is_authenticated %}
             <form method="post" action="">
               {% csrf_token %}
-              <button type="submit" class="btn btn-success">Register for Event</button>
+              <button type="submit" class="btn btn-success btn-lg">Register for Event</button>
             </form>
-            {% else %}
-            <p>Please <a href="/accounts/login/">login</a> to register for this event.</p>
             {% endif %}
+            <a href="{% url 'download_event_ics' event.event_id %}" class="btn btn-primary"><i class="bi bi-calendar-event"></i> Add to Outlook</a>
           </div>
-        </div>
       </div>
     </div>
 
@@ -100,6 +140,19 @@
         <a class="text-body" href="#">Pitt Events</a>
       </div>
     </footer>
+
+    {% if messages %}
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+      {% for message in messages %}
+      <div class="toast align-items-center text-bg-{{ message.tags }} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body">{{ message }}</div>
+          <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
 
     <script>
       const latitude = '{{ event.latitude|safe }}';
@@ -112,6 +165,14 @@
       }).addTo(map);
 
       L.marker([latitude, longitude]).addTo(map).bindPopup('{{ event.title }}').openPopup();
+
+      document.addEventListener('DOMContentLoaded', function () {
+        const toastElList = [].slice.call(document.querySelectorAll('.toast'));
+        const toastList = toastElList.map(function (toastEl) {
+          return new bootstrap.Toast(toastEl, { autohide: true, delay: 5000 });
+        });
+        toastList.forEach((toast) => toast.show());
+      });
     </script>
   </body>
 </html>
