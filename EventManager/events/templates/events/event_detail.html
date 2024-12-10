@@ -132,7 +132,14 @@
               {% endif %}
             </form>
             {% endif %}
-            <a href="{% url 'download_event_ics' event.event_id %}" class="btn btn-primary"><i class="bi bi-calendar-event"></i> Add to Outlook</a>
+            <a
+              href="https://www.google.com/calendar/render?action=TEMPLATE&text={{ event.title|urlencode }}&dates={{ event.time|date:'Ymd\\THis\\Z' }}/{{ end_time|date:'Ymd\\THis\\Z' }}&details={{ event.description|urlencode }}&location={{ event.location|urlencode }}&sf=true&output=xml"
+              class="btn btn-primary"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <i class="bi bi-calendar3"></i> Add to Google Calendar
+            </a>
           </div>
         </div>
       </div>

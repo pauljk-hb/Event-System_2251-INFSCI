@@ -39,6 +39,7 @@ def event_detail(request, event_id):
     event = get_object_or_404(Event, event_id=event_id)
     event.split_tags = event.tags.split(',')
     signup_count = EventSignup.objects.filter(event=event).count()
+    end_time = event.time + timedelta(hours=1)
 
     if request.method == 'POST':
         if request.user.is_authenticated:
@@ -56,33 +57,9 @@ def event_detail(request, event_id):
             messages.error(request, "You need to log in to register for an event.")
             return HttpResponseRedirect(reverse('login'))
 
-    return render(request, 'events/event_detail.html', {'event': event, 'signup_count': signup_count, 'now': now()})
+    return render(request, 'events/event_detail.html', {'event': event, 'signup_count': signup_count, 'now': now(), 'end_time': end_time})
 
 def history_events(request):
     events = Event.objects.filter(time__lt=now())
     events = events.order_by('-time')
     return render(request, 'events/history_events.html', {'events': events})
-
-def download_event_ics(request, event_id):
-    event = get_object_or_404(Event, event_id=event_id)
-    end_time = (event.time + timedelta(hours=1)).strftime('%Y%m%dT%H%M%S')
-    start_time = event.time.strftime('%Y%m%dT%H%M%S')
-    end_time = (event.time + timedelta(hours=1)).strftime('%Y%m%dT%H%M%S')
-    ics_content = f"""BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//Your Organization//Your App//EN
-BEGIN:VEVENT
-UID:{event_id}@yourapp.com
-DTSTAMP:{datetime.now().strftime('%Y%m%dT%H%M%S')}
-DTSTART;TZID=Europe/Berlin:{start_time}
-DTEND;TZID=Europe/Berlin:{end_time}
-SUMMARY:{event.title}
-DESCRIPTION:{event.description}
-LOCATION:{event.location}
-END:VEVENT
-END:VCALENDAR
-        """
-
-    response = HttpResponse(ics_content, content_type="text/calendar")
-    response['Content-Disposition'] = f'attachment; filename="{event.title}.ics"'
-    return response
